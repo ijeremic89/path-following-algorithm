@@ -7,3 +7,4 @@ public final class Indicators {
     public static final String VERTICAL = "|";
     public static final String CORNER = "+";
 }
+

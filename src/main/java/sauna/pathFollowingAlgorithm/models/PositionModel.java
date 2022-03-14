@@ -11,6 +11,11 @@ public class PositionModel {
     public PositionModel() {
     }
 
+    public PositionModel(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
     public PositionModel(int x, int y, String value, Direction lastDirection) {
         this.x = x;
         this.y = y;
