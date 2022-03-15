@@ -7,7 +7,7 @@ import java.util.List;
 
 public class PositionUtils {
 
-    public static boolean isValidMatrixPosition(MatrixModel matrix, PositionModel position) {
+    public static boolean isPositionInMatrix(MatrixModel matrix, PositionModel position) {
         try {
             String value = matrix.getMatrix()[position.getY()][position.getX()];
         } catch (ArrayIndexOutOfBoundsException e) {
@@ -16,8 +16,8 @@ public class PositionUtils {
         return true;
     }
 
-    public static boolean isPositionWithEmptyIndicator(PositionModel position, MatrixModel matrix) {
-        return matrix.getMatrix()[position.getY()][position.getX()].equals(" ");
+    public static boolean positionNotEmpty(PositionModel position, MatrixModel matrix) {
+        return !matrix.getMatrix()[position.getY()][position.getX()].equals(" ");
     }
 
     public static boolean isPositionAlreadyUsed(PositionModel positionModel, List<PositionModel> positionHistory) {
