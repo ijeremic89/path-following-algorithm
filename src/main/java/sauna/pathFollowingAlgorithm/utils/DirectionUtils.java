@@ -1,25 +1,41 @@
 package sauna.pathFollowingAlgorithm.utils;
 
+import sauna.pathFollowingAlgorithm.constants.Indicators;
+import sauna.pathFollowingAlgorithm.constants.Regex;
 import sauna.pathFollowingAlgorithm.enums.Direction;
+import sauna.pathFollowingAlgorithm.exceptions.MultipleStartingPathsException;
+import sauna.pathFollowingAlgorithm.exceptions.MultipleTurnsException;
+import sauna.pathFollowingAlgorithm.models.PositionModel;
+
+import java.util.List;
 
 public class DirectionUtils {
     public static Direction getOppositeDirection(Direction direction) {
-        Direction oppositeDirection = Direction.NoDirection;
-
         switch (direction) {
             case Right:
-                oppositeDirection = Direction.Left;
+                direction = Direction.Left;
                 break;
             case Left:
-                oppositeDirection = Direction.Right;
+                direction = Direction.Right;
                 break;
             case Up:
-                oppositeDirection = Direction.Down;
+                direction = Direction.Down;
                 break;
             case Down:
-                oppositeDirection = Direction.Up;
+                direction = Direction.Up;
                 break;
         }
-        return oppositeDirection;
+        return direction;
+    }
+
+    public static void checkMultipleDirections(List<Direction> possibleDirections, PositionModel currentPosition) {
+        if (possibleDirections.size() > 1) {
+            if (currentPosition.getValue().equals(Indicators.START)) {
+                throw new MultipleStartingPathsException();
+            }
+            if (currentPosition.getValue().equals(Indicators.CORNER) || currentPosition.getValue().matches(Regex.CAPITAL_LETTERS)) {
+                throw new MultipleTurnsException();
+            }
+        }
     }
 }

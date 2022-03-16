@@ -27,8 +27,8 @@ public class FollowPath {
 
         while (!currentPosition.getValue().equals(Indicators.END)) {
             positionHistory.add(PositionUtils.copyPosition(currentPosition));
-
-            Direction direction = findDirection(matrixModel, currentPosition);
+            List<Direction> possibleDirections = findPossibleDirections(matrixModel, currentPosition);
+            Direction direction = findDirection(currentPosition, possibleDirections);
             currentPosition = nextPosition(matrixModel, currentPosition, direction, positionHistory);
             path.append(currentPosition.getValue());
 
@@ -40,47 +40,57 @@ public class FollowPath {
         return new PathResultModel(letters.toString(), path.toString());
     }
 
-    public Direction findDirection(MatrixModel matrix, PositionModel currentPosition) {
-        Direction direction = findPossibleDirections(matrix, currentPosition);
+    private Direction findDirection(PositionModel currentPosition, List<Direction> possibleDirections) {
+        Direction lastDirection = currentPosition.getLastDirection();
+        boolean lastDirectionIsPossibleDirection =
+                possibleDirections.stream()
+                        .anyMatch(direction -> direction.equals(currentPosition.getLastDirection()));
+
+        if (possibleDirections.stream().findFirst().isEmpty()) {
+            throw new BrokenPathException();
+        }
 
         if (currentPosition.getValue().equals(Indicators.HORIZONTAL) || currentPosition.getValue().equals(Indicators.VERTICAL)) {
-            return currentPosition.getLastDirection();
+            return lastDirection;
         }
-        return direction;
+
+        if (currentPosition.getValue().matches(Regex.CAPITAL_LETTERS)) {
+            if (lastDirectionIsPossibleDirection) {
+                return currentPosition.getLastDirection();
+            }
+        }
+
+        if (currentPosition.getValue().equals(Indicators.CORNER)) {
+
+            if (lastDirectionIsPossibleDirection) {
+                if (possibleDirections.size() > 1) {
+                    possibleDirections.remove(currentPosition.getLastDirection());
+                } else {
+                    throw new FakeTurnException();
+                }
+            }
+        }
+
+        DirectionUtils.checkMultipleDirections(possibleDirections, currentPosition);
+        return possibleDirections.stream().findFirst().get();
     }
 
-    public Direction findPossibleDirections(MatrixModel matrix, PositionModel currentPosition) {
-        List<Direction> possibleDirections = new ArrayList<>();
-
+    private List<Direction> findPossibleDirections(MatrixModel matrix, PositionModel currentPosition) {
         PositionModel right = new PositionModel(currentPosition.getX() + 1, currentPosition.getY());
         PositionModel left = new PositionModel(currentPosition.getX() - 1, currentPosition.getY());
         PositionModel up = new PositionModel(currentPosition.getX(), currentPosition.getY() - 1);
         PositionModel down = new PositionModel(currentPosition.getX(), currentPosition.getY() + 1);
 
-        possibleDirections.add(validDirection(matrix, right, Direction.Right, currentPosition));
-        possibleDirections.add(validDirection(matrix, left, Direction.Left, currentPosition));
-        possibleDirections.add(validDirection(matrix, up, Direction.Up, currentPosition));
-        possibleDirections.add(validDirection(matrix, down, Direction.Down, currentPosition));
+        List<Direction> possibleDirections = new ArrayList<>();
+        possibleDirections.add(getValidDirection(matrix, right, Direction.Right, currentPosition));
+        possibleDirections.add(getValidDirection(matrix, left, Direction.Left, currentPosition));
+        possibleDirections.add(getValidDirection(matrix, up, Direction.Up, currentPosition));
+        possibleDirections.add(getValidDirection(matrix, down, Direction.Down, currentPosition));
 
-        possibleDirections = possibleDirections.stream().filter(Objects::nonNull).collect(Collectors.toList());
-
-        if (possibleDirections.isEmpty()) {
-            throw new BrokenPathException();
-        }
-
-        if (possibleDirections.size() > 1) {
-            if (currentPosition.getValue().equals(Indicators.START)) {
-                throw new MultipleStartingPathsException();
-            }
-            if (currentPosition.getValue().equals(Indicators.CORNER)) {
-                throw new FakeTurnException();
-            }
-        }
-
-        return possibleDirections.stream().findFirst().get();
+        return possibleDirections.stream().filter(Objects::nonNull).collect(Collectors.toList());
     }
 
-    public Direction validDirection(MatrixModel matrix, PositionModel nextPosition, Direction nextDirection, PositionModel currentPosition) {
+    private Direction getValidDirection(MatrixModel matrix, PositionModel nextPosition, Direction nextDirection, PositionModel currentPosition) {
         if (PositionUtils.isPositionInMatrix(matrix, nextPosition)
                 && PositionUtils.positionNotEmpty(nextPosition, matrix)
                 && !DirectionUtils.getOppositeDirection(currentPosition.getLastDirection()).equals(nextDirection)) {
@@ -89,25 +99,21 @@ public class FollowPath {
         return null;
     }
 
-    public PositionModel nextPosition(MatrixModel matrix, PositionModel currentPosition, Direction nextDirection, List<PositionModel> positionHistory) {
-        currentPosition = move(matrix, currentPosition, nextDirection);
+    private PositionModel nextPosition(MatrixModel matrix, PositionModel currentPosition, Direction nextDirection, List<PositionModel> positionHistory) {
+        currentPosition = moveToNextPosition(matrix, currentPosition, nextDirection);
 
-        if (PositionUtils.isPositionInMatrix(matrix, currentPosition) && PositionUtils.positionNotEmpty(currentPosition, matrix)) {
-            if (!PositionUtils.isPositionAlreadyUsed(currentPosition, positionHistory)) {
-                return currentPosition;
-            }
+        if (!PositionUtils.isPositionAlreadyUsed(currentPosition, positionHistory)) {
+            return currentPosition;
+        }
 
-            if (PositionUtils.isPositionAlreadyUsed(currentPosition, positionHistory)) {
-                return move(matrix, currentPosition, nextDirection);
-            }
-        } else {
-            throw new InvalidOrEmptyPositionInMatrix();
+        if (PositionUtils.isPositionAlreadyUsed(currentPosition, positionHistory)) {
+            return moveToNextPosition(matrix, currentPosition, nextDirection);
         }
 
         return currentPosition;
     }
 
-    public PositionModel move(MatrixModel matrix, PositionModel currentPosition, Direction nextDirection) {
+    private PositionModel moveToNextPosition(MatrixModel matrix, PositionModel currentPosition, Direction nextDirection) {
         switch (nextDirection) {
             case Right:
                 currentPosition.setX(currentPosition.getX() + 1);
