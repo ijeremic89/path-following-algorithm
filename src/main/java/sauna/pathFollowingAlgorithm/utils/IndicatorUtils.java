@@ -15,7 +15,7 @@ public class IndicatorUtils {
                     position.setX(j);
                     position.setY(i);
                     position.setValue(indicator);
-                    position.setLastDirection(Direction.NoDirection);
+                    position.setLastDirection(Direction.NO_DIRECTION);
                     return position;
                 }
             }

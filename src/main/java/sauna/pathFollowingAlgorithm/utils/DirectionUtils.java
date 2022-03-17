@@ -12,17 +12,17 @@ import java.util.List;
 public class DirectionUtils {
     public static Direction getOppositeDirection(Direction direction) {
         switch (direction) {
-            case Right:
-                direction = Direction.Left;
+            case RIGHT:
+                direction = Direction.LEFT;
                 break;
-            case Left:
-                direction = Direction.Right;
+            case LEFT:
+                direction = Direction.RIGHT;
                 break;
-            case Up:
-                direction = Direction.Down;
+            case UP:
+                direction = Direction.DOWN;
                 break;
-            case Down:
-                direction = Direction.Up;
+            case DOWN:
+                direction = Direction.UP;
                 break;
         }
         return direction;

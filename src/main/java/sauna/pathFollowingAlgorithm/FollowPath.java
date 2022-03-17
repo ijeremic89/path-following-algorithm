@@ -3,7 +3,8 @@ package sauna.pathFollowingAlgorithm;
 import sauna.pathFollowingAlgorithm.constants.Indicators;
 import sauna.pathFollowingAlgorithm.constants.Regex;
 import sauna.pathFollowingAlgorithm.enums.Direction;
-import sauna.pathFollowingAlgorithm.exceptions.*;
+import sauna.pathFollowingAlgorithm.exceptions.BrokenPathException;
+import sauna.pathFollowingAlgorithm.exceptions.FakeTurnException;
 import sauna.pathFollowingAlgorithm.models.MatrixModel;
 import sauna.pathFollowingAlgorithm.models.PathResultModel;
 import sauna.pathFollowingAlgorithm.models.PositionModel;
@@ -36,7 +37,6 @@ public class FollowPath {
                 letters.append(currentPosition.getValue());
             }
         }
-
         return new PathResultModel(letters.toString(), path.toString());
     }
 
@@ -44,13 +44,14 @@ public class FollowPath {
         Direction lastDirection = currentPosition.getLastDirection();
         boolean lastDirectionIsPossibleDirection =
                 possibleDirections.stream()
-                        .anyMatch(direction -> direction.equals(currentPosition.getLastDirection()));
+                                  .anyMatch(direction -> direction.equals(currentPosition.getLastDirection()));
 
         if (possibleDirections.stream().findFirst().isEmpty()) {
             throw new BrokenPathException();
         }
 
-        if (currentPosition.getValue().equals(Indicators.HORIZONTAL) || currentPosition.getValue().equals(Indicators.VERTICAL)) {
+        if (currentPosition.getValue().equals(Indicators.HORIZONTAL) ||
+                currentPosition.getValue().equals(Indicators.VERTICAL)) {
             return lastDirection;
         }
 
@@ -61,7 +62,6 @@ public class FollowPath {
         }
 
         if (currentPosition.getValue().equals(Indicators.CORNER)) {
-
             if (lastDirectionIsPossibleDirection) {
                 if (possibleDirections.size() > 1) {
                     possibleDirections.remove(currentPosition.getLastDirection());
@@ -70,7 +70,6 @@ public class FollowPath {
                 }
             }
         }
-
         DirectionUtils.checkMultipleDirections(possibleDirections, currentPosition);
         return possibleDirections.stream().findFirst().get();
     }
@@ -82,25 +81,25 @@ public class FollowPath {
         PositionModel down = new PositionModel(currentPosition.getX(), currentPosition.getY() + 1);
 
         List<Direction> possibleDirections = new ArrayList<>();
-        possibleDirections.add(getValidDirection(matrix, right, Direction.Right, currentPosition));
-        possibleDirections.add(getValidDirection(matrix, left, Direction.Left, currentPosition));
-        possibleDirections.add(getValidDirection(matrix, up, Direction.Up, currentPosition));
-        possibleDirections.add(getValidDirection(matrix, down, Direction.Down, currentPosition));
+        possibleDirections.add(getValidDirection(matrix, right, Direction.RIGHT, currentPosition));
+        possibleDirections.add(getValidDirection(matrix, left, Direction.LEFT, currentPosition));
+        possibleDirections.add(getValidDirection(matrix, up, Direction.UP, currentPosition));
+        possibleDirections.add(getValidDirection(matrix, down, Direction.DOWN, currentPosition));
 
         return possibleDirections.stream().filter(Objects::nonNull).collect(Collectors.toList());
     }
 
     private Direction getValidDirection(MatrixModel matrix, PositionModel nextPosition, Direction nextDirection, PositionModel currentPosition) {
-        if (PositionUtils.isPositionInMatrix(matrix, nextPosition)
-                && PositionUtils.positionNotEmpty(nextPosition, matrix)
-                && !DirectionUtils.getOppositeDirection(currentPosition.getLastDirection()).equals(nextDirection)) {
+        if (PositionUtils.isPositionInMatrix(matrix, nextPosition) &&
+                PositionUtils.positionNotEmpty(nextPosition, matrix) &&
+                !DirectionUtils.getOppositeDirection(currentPosition.getLastDirection()).equals(nextDirection)) {
             return nextDirection;
         }
         return null;
     }
 
     private PositionModel nextPosition(MatrixModel matrix, PositionModel currentPosition, Direction nextDirection, List<PositionModel> positionHistory) {
-        currentPosition = moveToNextPosition(matrix, currentPosition, nextDirection);
+        moveToNextPosition(matrix, currentPosition, nextDirection);
 
         if (!PositionUtils.isPositionAlreadyUsed(currentPosition, positionHistory)) {
             return currentPosition;
@@ -109,29 +108,26 @@ public class FollowPath {
         if (PositionUtils.isPositionAlreadyUsed(currentPosition, positionHistory)) {
             return moveToNextPosition(matrix, currentPosition, nextDirection);
         }
-
         return currentPosition;
     }
 
     private PositionModel moveToNextPosition(MatrixModel matrix, PositionModel currentPosition, Direction nextDirection) {
         switch (nextDirection) {
-            case Right:
+            case RIGHT:
                 currentPosition.setX(currentPosition.getX() + 1);
                 break;
-            case Left:
+            case LEFT:
                 currentPosition.setX(currentPosition.getX() - 1);
                 break;
-            case Down:
+            case DOWN:
                 currentPosition.setY(currentPosition.getY() + 1);
                 break;
-            case Up:
+            case UP:
                 currentPosition.setY(currentPosition.getY() - 1);
                 break;
         }
-
         currentPosition.setValue(matrix.getMatrix()[currentPosition.getY()][currentPosition.getX()]);
         currentPosition.setLastDirection(nextDirection);
-
         return currentPosition;
     }
 }

@@ -1,9 +1,9 @@
 package sauna.pathFollowingAlgorithm.enums;
 
 public enum Direction {
-    Up,
-    Down,
-    Left,
-    Right,
-    NoDirection
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT,
+    NO_DIRECTION
 }

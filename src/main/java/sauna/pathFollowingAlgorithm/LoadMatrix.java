@@ -2,7 +2,6 @@ package sauna.pathFollowingAlgorithm;
 
 import sauna.pathFollowingAlgorithm.constants.Indicators;
 import sauna.pathFollowingAlgorithm.constants.Regex;
-import sauna.pathFollowingAlgorithm.enums.Direction;
 import sauna.pathFollowingAlgorithm.exceptions.MultipleStartOrEndInMatrixException;
 import sauna.pathFollowingAlgorithm.exceptions.MatrixHasWrongCharactersException;
 import sauna.pathFollowingAlgorithm.exceptions.MatrixIsEmptyOrNullException;
@@ -48,7 +47,6 @@ public class LoadMatrix {
         }
 
         matrixModel.setStartingPosition(startPosition);
-
         return matrixModel;
     }
 
