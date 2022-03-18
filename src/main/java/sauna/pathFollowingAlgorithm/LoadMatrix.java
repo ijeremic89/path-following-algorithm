@@ -18,14 +18,15 @@ public class LoadMatrix {
     MatrixRepository matrixRepository = new MatrixRepository();
 
     public MatrixModel loadMatrix(int matrixId) {
-        String matrixAsString = matrixRepository.getMatrix(matrixId);
-        MatrixModel matrixModel = new MatrixModel();
-        matrixModel.setMatrix(createMatrixFromString(matrixAsString));
-
+        String matrixAsString = matrixRepository.getMatrixByID(matrixId);
 
         if (StringUtils.isEmpty(matrixAsString)) {
             throw new MatrixIsEmptyOrNullException();
         }
+
+        MatrixModel matrixModel = new MatrixModel();
+        matrixModel.setMatrix(createMatrixFromString(matrixAsString));
+
 
         if (!matrixAsString.matches(Regex.ACCEPTED_CHARACTERS)) {
             throw new MatrixHasWrongCharactersException();
