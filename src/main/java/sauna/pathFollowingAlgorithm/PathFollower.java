@@ -10,13 +10,15 @@ import sauna.pathFollowingAlgorithm.models.PathResultModel;
 import sauna.pathFollowingAlgorithm.models.PositionModel;
 import sauna.pathFollowingAlgorithm.utils.DirectionUtils;
 import sauna.pathFollowingAlgorithm.utils.PositionUtils;
+import sauna.pathFollowingAlgorithm.validation.MatrixValidator;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class FollowPath {
+public class PathFollower {
+    MatrixValidator matrixValidator = new MatrixValidator();
 
     public PathResultModel followPath(MatrixModel matrixModel) {
         StringBuilder letters = new StringBuilder();
@@ -70,7 +72,7 @@ public class FollowPath {
                 }
             }
         }
-        DirectionUtils.checkMultipleDirections(possibleDirections, currentPosition);
+        matrixValidator.checkMultipleDirections(possibleDirections, currentPosition);
         return possibleDirections.stream().findFirst().get();
     }
 
@@ -90,8 +92,8 @@ public class FollowPath {
     }
 
     private Direction getValidDirection(MatrixModel matrix, PositionModel nextPosition, Direction nextDirection, PositionModel currentPosition) {
-        if (PositionUtils.isPositionInMatrix(matrix, nextPosition) &&
-                PositionUtils.positionNotEmpty(nextPosition, matrix) &&
+        if (matrixValidator.isPositionInMatrix(matrix, nextPosition) &&
+                matrixValidator.positionNotEmpty(nextPosition, matrix) &&
                 !DirectionUtils.getOppositeDirection(currentPosition.getLastDirection()).equals(nextDirection)) {
             return nextDirection;
         }
@@ -101,11 +103,11 @@ public class FollowPath {
     private PositionModel nextPosition(MatrixModel matrix, PositionModel currentPosition, Direction nextDirection, List<PositionModel> positionHistory) {
         moveToNextPosition(matrix, currentPosition, nextDirection);
 
-        if (!PositionUtils.isPositionAlreadyUsed(currentPosition, positionHistory)) {
+        if (!matrixValidator.isPositionAlreadyUsed(currentPosition, positionHistory)) {
             return currentPosition;
         }
 
-        if (PositionUtils.isPositionAlreadyUsed(currentPosition, positionHistory)) {
+        if (matrixValidator.isPositionAlreadyUsed(currentPosition, positionHistory)) {
             return moveToNextPosition(matrix, currentPosition, nextDirection);
         }
         return currentPosition;

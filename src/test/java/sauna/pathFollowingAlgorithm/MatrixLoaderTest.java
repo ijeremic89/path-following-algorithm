@@ -9,7 +9,7 @@ import sauna.pathFollowingAlgorithm.exceptions.MultipleStartOrEndInMatrixExcepti
 import sauna.pathFollowingAlgorithm.repositories.MatrixRepository;
 
 
-public class LoadMatrixTest {
+public class MatrixLoaderTest {
 
     public static final String MATRIX =
             "@         \n" +
@@ -21,7 +21,7 @@ public class LoadMatrixTest {
                     "  +---D--+\n";
 
     MatrixRepository matrixRepository = new MatrixRepository();
-    LoadMatrix loadMatrix = new LoadMatrix();
+    MatrixLoader matrixLoader = new MatrixLoader();
 
     @Test
     public void getMatrixByIdTest() {
@@ -31,26 +31,26 @@ public class LoadMatrixTest {
 
     @Test(expected = MatrixIsEmptyOrNullException.class)
     public void throwMatrixIsEmptyOrNullExceptionTest() throws MatrixIsEmptyOrNullException {
-        loadMatrix.loadMatrix(55);
+        matrixLoader.createMatrix(55);
     }
 
     @Test(expected = MatrixHasWrongCharactersException.class)
     public void throwMatrixHasWrongCharactersExceptionTest() throws MatrixHasWrongCharactersException {
-        loadMatrix.loadMatrix(14);
+        matrixLoader.createMatrix(14);
     }
 
     @Test(expected = MultipleStartOrEndInMatrixException.class)
     public void throwMultipleStartExceptionTest() throws MultipleStartOrEndInMatrixException {
-        loadMatrix.loadMatrix(8);
+        matrixLoader.createMatrix(8);
     }
 
     @Test(expected = IndicatorPositionNotFoundException.class)
     public void throwStartPositionNotFoundExceptionTest()  throws IndicatorPositionNotFoundException {
-        loadMatrix.loadMatrix(6);
+        matrixLoader.createMatrix(6);
     }
 
     @Test(expected = IndicatorPositionNotFoundException.class)
     public void throwEndPositionNotFoundExceptionTest()  throws IndicatorPositionNotFoundException {
-        loadMatrix.loadMatrix(7);
+        matrixLoader.createMatrix(7);
     }
 }

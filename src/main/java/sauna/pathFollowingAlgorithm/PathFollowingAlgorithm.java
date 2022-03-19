@@ -11,11 +11,11 @@ public class PathFollowingAlgorithm {
         System.out.println("Please enter matrix ID: ");
         int matrixId = sc.nextInt();
 
-        LoadMatrix loadMatrix = new LoadMatrix();
-        MatrixModel matrix = loadMatrix.loadMatrix(matrixId);
+        MatrixLoader matrixLoader = new MatrixLoader();
+        MatrixModel matrix = matrixLoader.createMatrix(matrixId);
 
-        FollowPath followPath = new FollowPath();
-        PathResultModel pathResult = followPath.followPath(matrix);
+        PathFollower pathFollower = new PathFollower();
+        PathResultModel pathResult = pathFollower.followPath(matrix);
 
         System.out.print("Path: " + pathResult.getPath());
         System.out.println(System.lineSeparator());

@@ -1,30 +1,10 @@
 package sauna.pathFollowingAlgorithm.utils;
 
+import sauna.pathFollowingAlgorithm.enums.Direction;
 import sauna.pathFollowingAlgorithm.models.MatrixModel;
 import sauna.pathFollowingAlgorithm.models.PositionModel;
 
-import java.util.List;
-
 public class PositionUtils {
-
-    public static boolean isPositionInMatrix(MatrixModel matrix, PositionModel position) {
-        try {
-            String value = matrix.getMatrix()[position.getY()][position.getX()];
-        } catch (ArrayIndexOutOfBoundsException e) {
-            return false;
-        }
-        return true;
-    }
-
-    public static boolean positionNotEmpty(PositionModel position, MatrixModel matrix) {
-        return !matrix.getMatrix()[position.getY()][position.getX()].equals(" ");
-    }
-
-    public static boolean isPositionAlreadyUsed(PositionModel positionModel, List<PositionModel> positionHistory) {
-        return positionHistory.stream()
-                              .anyMatch(position -> positionModel.getX() == position.getX() && positionModel.getY() == position.getY());
-    }
-
     public static PositionModel copyPosition(PositionModel currentPosition) {
         PositionModel positionModel = new PositionModel();
         positionModel.setX(currentPosition.getX());
@@ -32,5 +12,23 @@ public class PositionUtils {
         positionModel.setValue(currentPosition.getValue());
         positionModel.setLastDirection(currentPosition.getLastDirection());
         return positionModel;
+    }
+
+    public static PositionModel findIndicatorPositionInMatrix(MatrixModel matrixModel, String indicator) {
+        PositionModel position = new PositionModel();
+        String[][] matrix = matrixModel.getMatrix();
+
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {
+                if (matrix[i][j].equals(indicator)) {
+                    position.setX(j);
+                    position.setY(i);
+                    position.setValue(indicator);
+                    position.setLastDirection(Direction.NO_DIRECTION);
+                    return position;
+                }
+            }
+        }
+        return null;
     }
 }

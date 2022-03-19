@@ -10,14 +10,16 @@ import sauna.pathFollowingAlgorithm.models.MatrixModel;
 import sauna.pathFollowingAlgorithm.models.PositionModel;
 import sauna.pathFollowingAlgorithm.repositories.MatrixRepository;
 import org.apache.commons.lang3.StringUtils;
-import sauna.pathFollowingAlgorithm.utils.IndicatorUtils;
+import sauna.pathFollowingAlgorithm.utils.PositionUtils;
+import sauna.pathFollowingAlgorithm.validation.MatrixValidator;
 
 import java.util.Objects;
 
-public class LoadMatrix {
+public class MatrixLoader {
     MatrixRepository matrixRepository = new MatrixRepository();
+    MatrixValidator matrixValidator = new MatrixValidator();
 
-    public MatrixModel loadMatrix(int matrixId) {
+    public MatrixModel createMatrix(int matrixId) {
         String matrixAsString = matrixRepository.getMatrixByID(matrixId);
 
         if (StringUtils.isEmpty(matrixAsString)) {
@@ -32,12 +34,13 @@ public class LoadMatrix {
             throw new MatrixHasWrongCharactersException();
         }
 
-        if (IndicatorUtils.isDuplicateIndicatorInMatrix(matrixModel, Indicators.START) || IndicatorUtils.isDuplicateIndicatorInMatrix(matrixModel, Indicators.END)) {
+        if (matrixValidator.isDuplicateIndicatorInMatrix(matrixModel, Indicators.START)
+                || matrixValidator.isDuplicateIndicatorInMatrix(matrixModel, Indicators.END)) {
             throw new MultipleStartOrEndInMatrixException();
         }
 
-        PositionModel startPosition = IndicatorUtils.findIndicatorPositionInMatrix(matrixModel, Indicators.START);
-        PositionModel endPosition = IndicatorUtils.findIndicatorPositionInMatrix(matrixModel, Indicators.END);
+        PositionModel startPosition = PositionUtils.findIndicatorPositionInMatrix(matrixModel, Indicators.START);
+        PositionModel endPosition = PositionUtils.findIndicatorPositionInMatrix(matrixModel, Indicators.END);
 
         if (Objects.isNull(startPosition)) {
             throw new IndicatorPositionNotFoundException(Indicators.START);

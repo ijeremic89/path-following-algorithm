@@ -1,51 +1,53 @@
 package sauna.pathFollowingAlgorithm.repositories;
 
+import sauna.pathFollowingAlgorithm.constants.Matrixes;
+
 public class MatrixRepository {
     public String getMatrixByID(int matrixId) {
         String matrix = "";
 
         switch (matrixId) {
             case 1:
-                matrix = matrix_1;
+                matrix = Matrixes.MATRIX_1;
                 break;
             case 2:
-                matrix = matrix_2;
+                matrix = Matrixes.MATRIX_2;
                 break;
             case 3:
-                matrix = matrix_3;
+                matrix = Matrixes.MATRIX_3;
                 break;
             case 4:
-                matrix = matrix_4;
+                matrix = Matrixes.MATRIX_4;
                 break;
             case 5:
-                matrix = matrix_5;
+                matrix = Matrixes.MATRIX_5;
                 break;
             case 6:
-                matrix = matrix_6;
+                matrix = Matrixes.MATRIX_6;
                 break;
             case 7:
-                matrix = matrix_7;
+                matrix = Matrixes.MATRIX_7;
                 break;
             case 8:
-                matrix = matrix_8;
+                matrix = Matrixes.MATRIX_8;
                 break;
             case 9:
-                matrix = matrix_9;
+                matrix = Matrixes.MATRIX_9;
                 break;
             case 10:
-                matrix = matrix_10;
+                matrix = Matrixes.MATRIX_10;
                 break;
             case 11:
-                matrix = matrix_11;
+                matrix = Matrixes.MATRIX_11;
                 break;
             case 12:
-                matrix = matrix_12;
+                matrix = Matrixes.MATRIX_12;
                 break;
             case 13:
-                matrix = matrix_13;
+                matrix = Matrixes.MATRIX_13;
                 break;
             case 14:
-                matrix = matrix_14;
+                matrix = Matrixes.MATRIX_14;
                 break;
             default:
                 //
@@ -54,97 +56,5 @@ public class MatrixRepository {
     }
 
 
-    String matrix_1 =
-            "@---A---+\n" +
-                    "        |\n" +
-                    "x-B-+   C\n" +
-                    "    |   |\n" +
-                    "    +---+";
 
-    String matrix_2 =
-            "@         \n" +
-                    "| +-C--+  \n" +
-                    "A |    |  \n" +
-                    "+---B--+  \n" +
-                    "  |      x\n" +
-                    "  |      |\n" +
-                    "  +---D--+\n";
-
-    String matrix_3 =
-            "@---A---+\n" +
-                    "        |\n" +
-                    "x-B-+   |\n" +
-                    "    |   |\n" +
-                    "    +---C";
-
-    String matrix_4 =
-            "     +-O-N-+  \n" +
-                    "     |     |  \n" +
-                    "     |   +-I-+\n" +
-                    " @-G-O-+ | | |\n" +
-                    "     | | +-+ E\n" +
-                    "     +-+     S\n" +
-                    "             |\n" +
-                    "             x";
-
-    String matrix_5 =
-            " +-L-+  \n" +
-                    " |  +A-+\n" +
-                    "@B+ ++ H\n" +
-                    " ++    x";
-
-    String matrix_6 =
-            "     -A---+\n" +
-                    "          |\n" +
-                    "  x-B-+   C\n" +
-                    "      |   |\n" +
-                    "      +---+";
-
-    String matrix_7 =
-            "@--A---+\n" +
-                    "       |\n" +
-                    " B-+   C\n" +
-                    "   |   |\n" +
-                    "   +---+";
-
-    String matrix_8 =
-            " @--A-@-+\n" +
-                    "        |\n" +
-                    "x-B-+   C\n" +
-                    "    |   |\n" +
-                    "    +---+";
-
-    String matrix_9 =
-            " @--A---+\n" +
-                    "        |\n" +
-                    "x-Bx+   C\n" +
-                    "    |   |\n" +
-                    "    +---+";
-
-    String matrix_10 =
-            "     x-B\n" +
-                    "       |\n" +
-                    "@--A---+\n" +
-                    "       |\n" +
-                    "  x+   C\n" +
-                    "   |   |\n" +
-                    "   +---+";
-
-    String matrix_11 =
-            "@--A-+\n" +
-                    "     |\n" +
-                    "      \n" +
-                    "   B-x";
-
-    String matrix_12 =
-            "-B-@-A-x";
-
-    String matrix_13 =
-            "@-A-+-B-x";
-
-    String matrix_14 =
-            "@         \n" +
-                    "| +-C--+  \n" +
-                    "a x    |  \n" +
-                    "+---B--+  \n";
 }
