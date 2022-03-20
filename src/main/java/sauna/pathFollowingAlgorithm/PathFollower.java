@@ -5,6 +5,7 @@ import sauna.pathFollowingAlgorithm.constants.Regex;
 import sauna.pathFollowingAlgorithm.enums.Direction;
 import sauna.pathFollowingAlgorithm.exceptions.BrokenPathException;
 import sauna.pathFollowingAlgorithm.exceptions.FakeTurnException;
+import sauna.pathFollowingAlgorithm.exceptions.MultipleStartOrEndInMatrixException;
 import sauna.pathFollowingAlgorithm.models.MatrixModel;
 import sauna.pathFollowingAlgorithm.models.PathResultModel;
 import sauna.pathFollowingAlgorithm.models.PositionModel;
@@ -37,6 +38,12 @@ public class PathFollower {
 
             if (currentPosition.getValue().matches(Regex.CAPITAL_LETTERS)) {
                 letters.append(currentPosition.getValue());
+            }
+
+            if (currentPosition.getValue().equals(Indicators.END)) {
+                if (findPossibleDirections(matrixModel, currentPosition).size() > 0) {
+                    throw new MultipleStartOrEndInMatrixException(Indicators.END);
+                }
             }
         }
         return new PathResultModel(letters.toString(), path.toString());

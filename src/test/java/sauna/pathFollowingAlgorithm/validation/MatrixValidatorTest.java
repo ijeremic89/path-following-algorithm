@@ -16,7 +16,7 @@ import java.util.List;
 
 public class MatrixValidatorTest {
 
-    public static final String MATRIX_01 = "@-+  A  x";
+    public static final String MATRIX_TEST = "@-+  A  x";
     public static final String MATRIX_WITH_DUPLICATE_START = "@-@  A  x";
 
     MatrixValidator matrixValidator = new MatrixValidator();
@@ -33,7 +33,7 @@ public class MatrixValidatorTest {
 
     @Before
     public void init() {
-        matrix = MatrixHelper.createMatrixModel(MATRIX_01, 3, 3);
+        matrix = MatrixHelper.createMatrixModel(MATRIX_TEST, 3, 3);
         matrixWithDuplicateStart = MatrixHelper.createMatrixModel(MATRIX_WITH_DUPLICATE_START, 3, 3);
 
         positionInMatrix = new PositionModel(1, 1, "-", Direction.RIGHT);

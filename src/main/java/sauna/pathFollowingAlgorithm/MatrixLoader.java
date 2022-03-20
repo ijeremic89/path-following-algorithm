@@ -29,14 +29,12 @@ public class MatrixLoader {
         MatrixModel matrixModel = new MatrixModel();
         matrixModel.setMatrix(createMatrixFromString(matrixAsString));
 
-
         if (!matrixAsString.matches(Regex.ACCEPTED_CHARACTERS)) {
             throw new MatrixHasWrongCharactersException();
         }
 
-        if (matrixValidator.isDuplicateIndicatorInMatrix(matrixModel, Indicators.START)
-                || matrixValidator.isDuplicateIndicatorInMatrix(matrixModel, Indicators.END)) {
-            throw new MultipleStartOrEndInMatrixException();
+        if (matrixValidator.isDuplicateIndicatorInMatrix(matrixModel, Indicators.START)) {
+            throw new MultipleStartOrEndInMatrixException(Indicators.START);
         }
 
         PositionModel startPosition = PositionUtils.findIndicatorPositionInMatrix(matrixModel, Indicators.START);
