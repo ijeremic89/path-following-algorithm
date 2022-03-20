@@ -5,6 +5,8 @@ import sauna.pathFollowingAlgorithm.models.MatrixModel;
 
 public class PathFollowerTest {
 
+    public static final String MATRIX_STRAIGHT_THROUGH_INTERSECTIONS = "@ +B+| | |+-A-+  |    x  ";
+
     MatrixLoader matrixLoader = new MatrixLoader();
     PathFollower pathFollower = new PathFollower();
     MatrixModel matrix_2 = new MatrixModel();

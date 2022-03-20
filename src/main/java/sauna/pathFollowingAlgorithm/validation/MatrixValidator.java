@@ -20,8 +20,8 @@ public class MatrixValidator {
         return true;
     }
 
-    public boolean positionNotEmpty(PositionModel position, MatrixModel matrix) {
-        return !matrix.getMatrix()[position.getY()][position.getX()].equals(" ");
+    public boolean isEmptyPosition(PositionModel position, MatrixModel matrix) {
+        return matrix.getMatrix()[position.getY()][position.getX()].equals(" ");
     }
 
     public boolean isPositionAlreadyUsed(PositionModel positionModel, List<PositionModel> positionHistory) {

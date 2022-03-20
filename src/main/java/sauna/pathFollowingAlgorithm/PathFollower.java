@@ -93,7 +93,7 @@ public class PathFollower {
 
     private Direction getValidDirection(MatrixModel matrix, PositionModel nextPosition, Direction nextDirection, PositionModel currentPosition) {
         if (matrixValidator.isPositionInMatrix(matrix, nextPosition) &&
-                matrixValidator.positionNotEmpty(nextPosition, matrix) &&
+                !matrixValidator.isEmptyPosition(nextPosition, matrix) &&
                 !DirectionUtils.getOppositeDirection(currentPosition.getLastDirection()).equals(nextDirection)) {
             return nextDirection;
         }
